@@ -24,3 +24,9 @@ def change_rating(song_id: str, db: Session = Depends(get_db)):
     if rating < 1 or rating > 10:
         raise HTTPException(status_code=500, detail="Gemini failed to provide a valid rating")
     return crud.put_rating(db=db, song_id=song_id, rating=rating)
+def put_rating(db: Session, song_id: str, rating: int):
+    song = get_song(db, song_id)
+    song.score = rating
+    db.commit()
+    db.refresh(song)
+    return song
