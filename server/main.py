@@ -1,8 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import dotenv_values
+from database import startup_db_client, shutdown_db_client, test
 
-config = dotenv_values(".env")
 app = FastAPI()
 
 app.add_middleware(
@@ -20,10 +19,22 @@ app.add_middleware(
 def hello_world():
     return "Hello world!"
 
+
+@app.post("/test")
+def test_post():
+    try:
+        test()
+        return {"message": "Record inserted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.on_event("startup")
-def startup_db_client():
-    pass
+def on_startup():
+    print("Starting up postgres database...")
+    startup_db_client()
 
 @app.on_event("shutdown")
-def shutdown_db_client():
-    pass
+def on_shutdown():
+    print("Shutting down postgres database...")
+    shutdown_db_client()
