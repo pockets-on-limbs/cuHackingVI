@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from api import song
+from api import song, gemini
 
 app = FastAPI()
 
@@ -20,4 +20,5 @@ def hello_world():
     return "Hello world!"
 
 app.include_router(song.router, prefix="/songs", tags=["songs"])
+app.include_router(gemini.router, prefix="/gemini", tags=["gemini"])
 

@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from db.session import get_db
 from models.song import Song
 from schemas.song import SongCreate, SongResponse
-import api.gemini as gem
 
 router = APIRouter()
 
