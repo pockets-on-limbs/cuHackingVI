@@ -20,7 +20,7 @@ def create_connection():
 
 def test():
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO songs (name) VALUES ('test')")
+    cursor.execute("INSERT INTO songs (songId, songName, artist, album) VALUES ('idk', 'idk', 'idk', 'idk')")
     connection.commit()
     cursor.close()
 
