@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { Auth } from "./components/Auth.jsx";
-import { Navbar } from "./components/Navbar.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage";
 

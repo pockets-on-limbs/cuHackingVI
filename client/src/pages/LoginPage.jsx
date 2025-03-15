@@ -1,9 +1,10 @@
-import { Navbar } from "../components/Navbar.jsx";
+import "../styles/LoginPage.css";
+import { MainCard } from "../components/MainCard.jsx";
 
 export function LoginPage() {
   return (
     <>
-      <Navbar />
+      <MainCard />
     </>
   );
 }
