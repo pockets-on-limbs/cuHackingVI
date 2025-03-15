@@ -7,7 +7,7 @@ npm i
 npm run dev
 ```
 
-## Developing locally - server
+### Developing locally - server
 ```
 cd server
 docker compose build
