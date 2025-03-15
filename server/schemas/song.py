@@ -11,7 +11,7 @@ class SongBase(BaseModel):
 class SongCreate(SongBase):
     pass
 
-class Song(SongBase):
+class SongResponse(SongBase):
     id: int
 
     class Config:
