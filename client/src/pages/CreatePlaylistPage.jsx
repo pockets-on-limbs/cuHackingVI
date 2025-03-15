@@ -1,7 +1,7 @@
 import React from "react";
-import "./MainPage.css";
-import { NextPage } from "./NextPage.jsx";
+import "../styles/CreatePlaylistPage.css";
 import { useState } from "react";
+import { RateSongsPage } from "./RateSongsPage.jsx";
 
 export function CreatePlaylistPage() {
   const [showNextPage, setShowNextPage] = useState(false);
@@ -9,7 +9,7 @@ export function CreatePlaylistPage() {
   return (
     <div className="mainpage">
       {showNextPage ? (
-        <NextPage />
+        <RateSongsPage />
       ) : (
         <>
           <h2>Spotify Clone</h2>

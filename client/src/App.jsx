@@ -1,28 +1,34 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { Auth } from "./components/Auth.jsx";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { LoginPage } from "./pages/LoginPage";
-import { RateSongsPage } from "./pages/RateSongsPage.jsx";
+import { Auth, getToken } from "./authentication/Auth.jsx";
+import { CreatePlaylistPage } from "./pages/CreatePlaylistPage.jsx";
 
 function App() {
-  const [login, setLogin] = useState(<p>Waiting</p>);
+  const [login, setLogin] = useState(null);
+  const [access, setAccess] = useState(sessionStorage.getItem("access_token"));
+
   useEffect(() => {
-    setLogin(Auth());
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has("code")) {
+      let code = urlParams.get("code");
+      sessionStorage.setItem("code", code);
+
+      getToken(code).then((token) => {
+        if (token) {
+          sessionStorage.setItem("access_token", token);
+          setAccess(true);
+        }
+      });
+
+      urlParams.delete("code");
+      window.history.replaceState("null", "", window.location.pathname);
+    } else {
+      setLogin(Auth());
+    }
   }, []);
 
-  return (
-    <>
-      {login}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/rating" element={<RateSongsPage />} />
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+  return access ? <CreatePlaylistPage /> : login;
 }
 
 export default App;
