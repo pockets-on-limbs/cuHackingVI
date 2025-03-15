@@ -1,4 +1,4 @@
-import { MainCard } from "../components/MainCard.jsx";
+import "../styles/LoginPage.css";
 
 export const Auth = async () => {
   const generateRandomString = (length) => {
