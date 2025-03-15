@@ -1,3 +1,5 @@
+import { MainCard } from "../components/MainCard.jsx";
+
 export const Auth = async () => {
   const generateRandomString = (length) => {
     const possible =
@@ -39,7 +41,18 @@ export const Auth = async () => {
     window.location.href = authUrl.toString();
   };
 
-  return <button onClick={authenticate}>LOGIN</button>;
+  return (
+    <div className="card-container">
+      <div className="card">
+        <h1>DJenerate</h1>
+        <div className="button-container">
+          <button className="card-btn" onClick={authenticate}>
+            LOG IN
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export const getToken = async (code) => {
