@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
+import { Auth } from "./components/Auth.jsx";
+import { Navbar } from "./components/Navbar.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
 
 function App() {
+  const [login, setLogin] = useState(<p>Waiting</p>);
+  useEffect(() => {
+    setLogin(Auth());
+  }, []);
+
   return (
     <>
-      <h1>Vite + React</h1>
-
-      <p>Click on the Vite and React logos to learn more</p>
+      {login}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
