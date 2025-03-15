@@ -1,23 +1,33 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from typing import List
 from db.session import get_db
-from schemas.song import Song, SongCreate
-import crud.song as crud
+from models.song import Song
+from schemas.song import SongCreate, SongResponse
 
 router = APIRouter()
 
-@router.post("/", response_model=Song)
-def create_song(song: SongCreate, db: Session = Depends(get_db)):
-    return crud.create_song(db=db, song=song)
 
-@router.get("/{song_id}", response_model=Song)
-def read_song(song_id: str, db: Session = Depends(get_db)):
-    db_song = crud.get_song(db, song_id)
-    if db_song is None:
-        raise HTTPException(status_code=404, detail="Song not found")
+@router.post("/", response_model=SongResponse)
+def create_song(song: SongCreate, db: Session = Depends(get_db)):
+    db_song = Song(
+        songid=song.songid,
+        songname=song.songname,
+        artist=song.artist,
+        album=song.album,
+        score=song.score,
+    )
+    db.add(db_song)
+    db.commit()
+    db.refresh(db_song)
     return db_song
 
-@router.get("/", response_model=List[Song])
+@router.get("/{song_id}", response_model=SongResponse)
+def read_song(song_id: str, db: Session = Depends(get_db)):
+    song = db.query(Song).filter(Song.songid == song_id).first()
+    if song is None:
+        raise HTTPException(status_code=404, detail=f"Song {song_id} not found")
+    return song
+
+@router.get("/", response_model=list[SongResponse])
 def read_songs(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return crud.get_songs(db=db, skip=skip, limit=limit)
+    return db.query(Song).offset(skip).limit(limit).all()
