@@ -3,6 +3,7 @@ FROM python:3.12.7-slim-bookworm AS python-base
 WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --upgrade pip
+RUN pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 RUN pip install -r requirements.txt
 COPY . ./
 
