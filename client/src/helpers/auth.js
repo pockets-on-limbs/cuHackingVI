@@ -19,19 +19,20 @@ const base64encode = (input) => {
     .replace(/\//g, "_");
 };
 
-const hashed = await sha256(codeVerifier);
+const hashed = sha256(codeVerifier);
 const codeChallenge = base64encode(hashed);
 
 export const authenticate = async () => {
   const authUrl = new URL("https://accounts.spotify.com/authorize");
   window.localStorage.setItem("code_verifier", codeVerifier);
 
+  console.log(process.env.VITE_SPOTIFY_REDIRECT_URI);
   const params = {
     response_type: "code",
-    client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
+    client_id: process.env.VITE_SPOTIFY_CLIENT_ID,
     code_challenge_method: "S256",
     code_challenge: codeChallenge,
-    redirect_uri: import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
+    redirect_uri: process.env.VITE_SPOTIFY_REDIRECT_URI,
     scope: "playlist-read-private",
   };
 
@@ -49,10 +50,10 @@ export const getToken = async (code) => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams({
-      client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
+      client_id: process.env.VITE_SPOTIFY_CLIENT_ID,
       grant_type: "authorization_code",
       code,
-      redirect_uri: import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
+      redirect_uri: process.env.VITE_SPOTIFY_REDIRECT_URI,
       code_verifier: codeVerifier,
     }),
   };

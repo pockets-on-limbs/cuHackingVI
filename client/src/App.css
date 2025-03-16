@@ -5,15 +5,7 @@
 @import url("https://fonts.cdnfonts.com/css/freecam2");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
 
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
-@import url("https://meyerweb.com/eric/tools/css/reset/reset.css");
-@import url("https://fonts.googleapis.com/css?family=Victor+Mono");
-@import url("https://fonts.cdnfonts.com/css/ocr-a-std");
-@import url("https://fonts.cdnfonts.com/css/freecam2");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
-
 #root {
-    font-family: "Victor Mono", monospace;
     font-family: "Victor Mono", monospace;
   max-width: 1280px;
   margin: auto;

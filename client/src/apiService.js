@@ -1,5 +1,5 @@
 // Create a new song
-const url = 'http://localhost:8080';
+const url = 'http://api.djenerate.club';
 export function createSong(song) {
   return fetch(`${url}/songs/`, {
       method: 'POST',
