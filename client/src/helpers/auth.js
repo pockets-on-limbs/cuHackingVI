@@ -32,7 +32,7 @@ export const authenticate = async () => {
     code_challenge_method: "S256",
     code_challenge: codeChallenge,
     redirect_uri: import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
-    scope: ["playlist-read-private", "user-modify-playback-state"],
+    scope: "playlist-read-private",
   };
 
   authUrl.search = new URLSearchParams(params).toString();
