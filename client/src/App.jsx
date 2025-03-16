@@ -1,34 +1,51 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { Auth, getToken } from "./authentication/Auth.jsx";
-import { CreatePlaylistPage } from "./pages/CreatePlaylistPage.jsx";
+import { authenticate, getToken } from "./helpers/auth";
+import Home from "./pages/Home";
 
 function App() {
-  const [login, setLogin] = useState(null);
-  const [access, setAccess] = useState(sessionStorage.getItem("access_token"));
+  const [access, setAccess] = useState(localStorage.getItem("access_token"));
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    if (urlParams.has("code")) {
+    if (urlParams.has("code") || localStorage.getItem("access_token") !== null) {
       let code = urlParams.get("code");
-      sessionStorage.setItem("code", code);
+      localStorage.setItem("code", code);
 
       getToken(code).then((token) => {
         if (token) {
-          sessionStorage.setItem("access_token", token);
-          setAccess(true);
+          localStorage.setItem("access_token", token);
+          setAccess(token);
         }
       });
 
       urlParams.delete("code");
       window.history.replaceState("null", "", window.location.pathname);
     } else {
-      setLogin(Auth());
+      setAccess(null);
     }
   }, []);
 
-  return access ? <CreatePlaylistPage /> : login;
+    return <div className="outer-box">
+        {
+            access ? <>
+                <button onClick={() => {
+                    localStorage.removeItem("access_token");
+                    localStorage.removeItem("code");
+                    localStorage.removeItem("code_verifier");
+                    setAccess(null);
+                }} className="back-btn">Disconnect from Spotify</button>
+                <Home token={access}/>
+            </>
+            : <>
+                <img src="/assets/catdj.gif" className="catdj"></img>
+                <div className="title">Welcome to <span className="name"><span className="dj">DJ</span>enerate</span></div>
+                <div className="subtitle">Craft your perfect playlist with Spotify recommendations and voice feedback!</div>
+                <button className="action-btn" onClick={authenticate}>Connect to Spotify</button>
+            </>
+        }
+    </div>;
 }
 
 export default App;

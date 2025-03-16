@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-function RecordButton() {
+function RecordButton({songid}) {
 	const [isRecording, setIsRecording] = useState(false);
 	const [audioStream, setAudioStream] = useState(null);
 	const [mediaRecorder, setMediaRecorder] = useState(null);
@@ -92,12 +92,13 @@ function RecordButton() {
 				formData.append("file", audioBlob, "recording.wav");
 
 				try {
-						const response = await axios.put("http://localhost:8080/gemini/string", formData, {
+						const response = await axios.put(`http://localhost:8080/gemini/${songid}`, formData, {
 								headers: {
 										"Content-Type": "multipart/form-data",
 								},
 						});
 						console.log("File uploaded successfully:", response.data);
+						alert("Thank you! The DJ has received your feedback about the song.");
 				} catch (error) {
 						console.error("Error uploading file:", error);
 				}
@@ -124,20 +125,22 @@ function RecordButton() {
 			<div>
 				{isRecording && (
 					<div>
-						<p>Recording...</p>
-						<p>Time: {formatTime(recordingTime)}</p>
+						<p className="description">Recording...</p>
+						<p className="description">Time: {formatTime(recordingTime)}</p>
 					</div>
 				)}
 			</div>
 			{audioBlob && (
 				<>
-					<div>Preview recording before submitting:</div>
-					<audio controls>
-						<source src={URL.createObjectURL(audioBlob)} type="audio/wav" />
-					</audio>
-					<button onClick={handleUpload} className="bg-blue-400 hover:opacity-80 text-white font-bold py-2 px-4 rounded mt-2">
-							Upload Recording
-					</button>
+					<div className="description">Preview recording before submitting:</div>
+					<div className="soundbar">
+						<audio controls>
+							<source src={URL.createObjectURL(audioBlob)} type="audio/wav" />
+						</audio>
+						<button onClick={handleUpload} className="bg-blue-400 hover:opacity-80 text-white font-bold py-2 px-4 rounded mt-2">
+								Upload Recording
+						</button>
+					</div>
 				</>
 			)}
 		</div>
