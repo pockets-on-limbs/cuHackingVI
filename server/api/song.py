@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from db.session import get_db
 from models.song import Song
@@ -9,6 +9,10 @@ router = APIRouter()
 
 @router.post("/", response_model=SongResponse)
 def create_song(song: SongCreate, db: Session = Depends(get_db)):
+    existing_song = db.query(Song).filter(Song.songid == song.songid).first()
+    if existing_song:
+        raise HTTPException(status_code=400, detail=f"Song with songid {song.songid} already exists")
+
     db_song = Song(
         songid=song.songid,
         songname=song.songname,
