@@ -1,12 +1,14 @@
+from __future__ import unicode_literals
 import requests
 from openai import OpenAI
 from dotenv import dotenv_values
 from googleapiclient.discovery import build
+import yt_dlp
+import ffmpeg
 
 payload = {}
 size = "100"
 seeds = ["6D44ttYlLo965aYN7MQueT", "0pBMFlAy7mQeUMQKaN4y8x", "0WCiI0ddWiu5F2kSHgfw5S", "5AyL2kgLtTWEu3qO3B9SqK", "0aBKFfdyOD1Ttvgv0cfjjJ"]
-
 
 url = "https://api.reccobeats.com/v1/track/recommendation?size=" + size + "&seeds="
 for seed in seeds:
@@ -54,13 +56,11 @@ print(restText)
 
 songsList = restText.split(',')
 
-
 # Youtube API stuff
 yt_key = my_key = config.get("YOUTUBE_API_KEY")
 
 # Build the YouTube API client
 youtube = build('youtube', 'v3', developerKey=yt_key)
-
 
 urls = []
 for song in songsList:
@@ -73,6 +73,8 @@ for song in songsList:
     )
     # Execute the request and fetch the response
     response = request.execute()
+    if len(response['items']) < 1:
+         continue
     item = response['items'][0]
     if 'videoId' not in item['id']:
             continue
@@ -80,3 +82,20 @@ for song in songsList:
     video_url = f"https://www.youtube.com/watch?v={item['id']['videoId']}"
     print(f"{video_title}: {video_url}")
     urls.append(video_url)
+
+ydl_opts = {
+    'format': 'bestaudio/best',
+    'outtmpl': '../audio/%(title)s.%(ext)s',
+    'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'wav',
+    }],
+}
+def download_from_url(url):    
+    ydl.download([url])
+    stream = ffmpeg.input('output.m4a')
+    stream = ffmpeg.output(stream, 'output.wav')
+
+with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+    for url in urls:
+        download_from_url(url)
