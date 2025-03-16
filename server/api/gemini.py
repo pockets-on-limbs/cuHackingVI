@@ -11,7 +11,6 @@ config = dotenv_values(".env")
 my_key = config.get("GEMINI_API_KEY")
 
 client = genai.Client(api_key=my_key)
-myfile = client.files.upload(file='media/love.mp3')
 
 def get_rating(file) -> str:
   prompt = "Use the speech from this file to rate the user's feelings about the song they are listening to on a scale of 1 to 10. Be sure to consider both the content of the speech and the tone of voice when determining the rating. Only print the integer you'd rate it, don't print any other text."
@@ -23,7 +22,7 @@ def get_rating(file) -> str:
   return response.text
 
 UPLOAD_FOLDER = Path("uploads/")
-ALLOWED_EXTENSIONS = {"mp3"}
+ALLOWED_EXTENSIONS = {"wav", "mp3"}
 
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
@@ -46,7 +45,7 @@ async def upload_file(song_id: str, db: Session = Depends(get_db), file: UploadF
         raise HTTPException(status_code=502, detail="Gemini failed to provide a valid rating")
     rating = int(rating)
     if rating < 1 or rating > 10:
-        raise HTTPException(status_code=502, detail="Gemini failed to provide a valid rating")  
+        raise HTTPException(status_code=502, detail="Gemini failed to provide a valid rating")
     # find the song that the user is providing feedback on
     song = db.query(Song).filter(Song.songid == song_id).first()
     if song is None:

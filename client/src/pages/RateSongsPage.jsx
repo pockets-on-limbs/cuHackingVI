@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MusicPlayer from "../components/MusicPlayer.jsx";
 import "../styles/RateSongsPage.css";
+import RecordButton from "../components/RecordButton.jsx";
 
 export function RateSongsPage() {
   const [songsRated, setSongsRated] = useState(0); // For tracking rated songs
@@ -30,6 +31,7 @@ export function RateSongsPage() {
         </div>
       </div>
       <MusicPlayer audioUrl={songDetails.audioUrl} onRate={handleRating} />
+      <RecordButton />
     </div>
   );
 }
