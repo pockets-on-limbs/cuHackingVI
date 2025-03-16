@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from db.session import get_db

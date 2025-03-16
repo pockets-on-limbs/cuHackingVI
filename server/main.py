@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from api import song, gemini, tracks
+from api import song, gemini
 
 app = FastAPI()
 
