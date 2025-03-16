@@ -2,8 +2,6 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from api import song, gemini
 
-import essentia
-
 app = FastAPI()
 
 app.add_middleware(
