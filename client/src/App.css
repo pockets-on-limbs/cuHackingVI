@@ -1,7 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://meyerweb.com/eric/tools/css/reset/reset.css");
+@import url("https://fonts.googleapis.com/css?family=Victor+Mono");
+@import url("https://fonts.cdnfonts.com/css/ocr-a-std");
+@import url("https://fonts.cdnfonts.com/css/freecam2");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+
 #root {
+    font-family: "Victor Mono", monospace;
   max-width: 1280px;
-  margin: 0 auto;
+  margin: auto;
   padding: 2rem;
   text-align: center;
 }
 
+
+.outer-box {
+    background-color: #1D1616;
+    box-sizing: border-box;
+    width: 80vw;
+    height: 80vh;
+    margin: 0 auto;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    box-shadow: 8px 8px 12px 4px rgba(0, 0, 0, 0.6);
+}
+
+.catdj {
+    width: 300px;
+    height: 300px;
+}
+
+.title {
+    font-family: 'OCR A Std';
+    font-size: 45px;
+    letter-spacing: -7px;
+    color: #bdafd3;
+    margin: 0;
+    margin-top: -10px;
+    padding: 0;
+    line-height: normal;
+
+    .name {
+        display: inline-block;
+        background: linear-gradient(to right,#6e28fc, #aa5eed, #f7c514, #aa5eed, #6e28fc);
+        -webkit-background-clip: text;
+        color: transparent;
+        font-size: 50px;
+    }
+}
+
+.dj {
+    font-family: Freecam2;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #95948c;
+    font-weight: 400;
+    margin-top: 10px;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.action-btn {
+    font-family: Victor Mono;
+    background-color: #6a5da6;
+    color: #a4a4a4;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 50px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #a151e8;
+        color: #fff;
+        box-shadow: 8px 8px 12px 4px rgba(0, 0, 0, 0.6);
+        transform: translateY(-2px);
+    }
+
+    transition: all 0.3s;
+}
+
+.back-btn {
+    font-family: Victor Mono;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    background-color: #be3846;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.4;
+
+    transition: all 0.3s;
+
+    &:hover {
+        opacity: 1;
+        background-color: #f14453;
+    }
+}
+
+
+.playlist-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    max-width: 100%;
+    overflow-x: scroll;
+    align-self: baseline;
+    padding-top: 40px;
+    padding-bottom: 50px;
+
+}
+
+h2 {
+    color: #bdafd3;
+}
+
+.playlist-card {
+    margin: 0 10px;
+}
+
+.description {
+    color: #95948c;
+    font-weight: 400;
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+.playlist-cover {
+    width: 180px;
+    height: 180px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #000000;
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 8px 8px 12px 4px rgba(0, 0, 0, 0.6);
+        border: 1px solid #a792fc;
+    }
+    transition: all 0.3s ease-in-out;
+
+    &:hover +h2 {
+        color: #a792fc;
+    }
+}
+
+.heading {
+    font-family: 'OCR A Std';
+    font-size: 30px;
+    letter-spacing: -6px;
+    color: #bdafd3;
+    margin: 0;
+    margin-top: -10px;
+    padding: 0;
+    line-height: normal;
+}
+
+.home-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
+
+    &.covered {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+}
+
+.add-playlist {
+    font-family: Victor Mono;
+    content: "+";
+    color: #a792fc;
+    background-image: url("/assets/cover2.png");
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0px;
+
+    &::before {
+        opacity: 1;
+        font-size: 50px;
+        content: "+";
+    }
+}
+
+.djenerate-text {
+    color: #bdafd3;
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.home-top-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin: 0 20px;
+    border-bottom: 1px solid #a792fc84;
+
+    * {
+        font-size: 13px !important;
+        letter-spacing: normal !important;
+    }
+
+    img {
+        width: 50px;
+        height: 50px;
+        margin-top: -20px;
+    }
+}
+
+
+/* .home-wrapper {
+    display: flex;
+    position: relative;
+    height: calc(100% - 100px);
+    justify-content: center;
+    align-items: center;
+
+    .back-btn {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+} */
+
+.playlist-box {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(53, 46, 72);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 4px solid rgb(53, 46, 72);
+    z-index: 1000;
+    width: 880px;
+    height: 380px;
+}
+
+.playlist-cover-large {
+    width: 380px;
+    height: 380px;
+    border-radius: 10px 0px 0px 10px;
+
+}
+
+.close-btn {
+    font-family: Open Sans;
+    font-variant: small-caps;
+    font-size: 22px;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+}

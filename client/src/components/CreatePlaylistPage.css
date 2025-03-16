@@ -1,0 +1,48 @@
+.main-playlist-container {
+  background-color: rgb(17, 17, 17);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 420px;
+    width: 950px;
+    border-radius: 20px;
+    background-color: blue;
+
+    flex-direction: column;
+    gap: 25px;
+    
+  
+  padding: 16px;
+}
+
+.scroll-container{
+  
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 23%;
+  gap: 40px;
+  padding-bottom: 18px;
+  overflow-x: auto;
+  white-space: nowrap;
+
+  
+}
+
+.scroll-container::-webkit-scrollbar{
+  display: none;
+}
+
+
+.playlist-card-container{
+  height: 290px;
+  width: 250px;
+  background-color: rgb(255, 238, 0);
+  border-radius: 16px;
+  box-shadow: 6px 6px 5px rgba(0, 0, 0, 0.3);
+}
+
+.playlist-title{
+  font-size: 20px;
+  margin: 0px;
+}
+
