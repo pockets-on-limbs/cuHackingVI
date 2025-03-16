@@ -1,5 +1,3 @@
-import "../styles/LoginPage.css";
-
 export const Auth = async () => {
   const generateRandomString = (length) => {
     const possible =
@@ -27,7 +25,7 @@ export const Auth = async () => {
 
   const authenticate = () => {
     const authUrl = new URL("https://accounts.spotify.com/authorize");
-    window.sessionStorage.setItem("code_verifier", codeVerifier);
+    window.localStorage.setItem("code_verifier", codeVerifier);
 
     const params = {
       response_type: "code",
@@ -41,40 +39,5 @@ export const Auth = async () => {
     window.location.href = authUrl.toString();
   };
 
-  return (
-    <div className="card-container">
-      <div className="card">
-        <h1>DJenerate</h1>
-        <div className="button-container">
-          <button className="card-btn" onClick={authenticate}>
-            LOG IN
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const getToken = async (code) => {
-  const codeVerifier = sessionStorage.getItem("code_verifier");
-
-  const url = "https://accounts.spotify.com/api/token";
-  const payload = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
-      grant_type: "authorization_code",
-      code,
-      redirect_uri: import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
-      code_verifier: codeVerifier,
-    }),
-  };
-
-  const body = await fetch(url, payload);
-  const response = await body.json();
-
-  return response.access_token;
+  return <button onClick={authenticate}>LOGIN</button>;
 };

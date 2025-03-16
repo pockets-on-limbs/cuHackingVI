@@ -1,0 +1,33 @@
+.rate-songs-page {
+  text-align: center;
+  padding: 40px;
+  background-color: #121212;
+  color: white;
+}
+
+.songs-rated {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.song-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.song-details img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+}
+
+.song-info h2 {
+  margin-top: 15px;
+  font-size: 1.8rem;
+}
+
+.song-info p {
+  font-size: 1.2rem;
+}
