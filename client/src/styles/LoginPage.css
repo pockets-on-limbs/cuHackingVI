@@ -1,0 +1,32 @@
+.card-container{
+  background-color: rgb(26, 26, 26);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 450px;
+  border-radius: 20px;
+}
+
+
+
+button {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.401);
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}

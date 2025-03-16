@@ -1,0 +1,58 @@
+.music-player {
+  background-color: #181818;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.play-pause-btn,
+.skip-btn {
+  background-color: #1db954;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.play-pause-btn:hover,
+.skip-btn:hover {
+  background-color: #1ed760;
+}
+
+.music-slider {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.rating-buttons {
+  margin-top: 20px;
+}
+
+.rate-btn {
+  background-color: #1db954;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.rate-btn:hover {
+  background-color: #1ed760;
+}
