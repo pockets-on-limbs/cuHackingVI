@@ -98,6 +98,7 @@ function RecordButton({songid}) {
 								},
 						});
 						console.log("File uploaded successfully:", response.data);
+						alert("Thank you! The DJ has received your feedback about the song.");
 				} catch (error) {
 						console.error("Error uploading file:", error);
 				}
