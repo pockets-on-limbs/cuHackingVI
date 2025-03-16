@@ -18,7 +18,6 @@ def get_rating(file) -> str:
     model='gemini-2.0-flash',
     contents=[prompt, file]
   )
-  print(response.text) #TODO: delete
   return response.text
 
 UPLOAD_FOLDER = Path("uploads/")
