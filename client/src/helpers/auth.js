@@ -24,7 +24,7 @@ const codeChallenge = base64encode(hashed);
 
 export const authenticate = async () => {
   const authUrl = new URL("https://accounts.spotify.com/authorize");
-  window.localStorage.setItem("code_verifier", codeVerifier);
+  localStorage.setItem("code_verifier", codeVerifier);
 
   console.log(import.meta.env.VITE_SPOTIFY_REDIRECT_URI);
   const params = {
