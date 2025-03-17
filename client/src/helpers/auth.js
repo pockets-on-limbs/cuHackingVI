@@ -4,25 +4,25 @@ const generateRandomString = (length) => {
   const values = crypto.getRandomValues(new Uint8Array(length));
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 };
-const codeVerifier = generateRandomString(64);
 
-const sha256 = async (plain) => {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(plain);
-  return window.crypto.subtle.digest("SHA-256", data);
-};
+async function sha256(plain) {
+  const encoder = new TextEncoder()
+  const data = encoder.encode(plain)
 
-const base64encode = (input) => {
-  return btoa(String.fromCharCode(...new Uint8Array(input)))
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-};
+  return window.crypto.subtle.digest('SHA-256', data)
+}
 
-const hashed = sha256(codeVerifier);
-const codeChallenge = base64encode(hashed);
+function base64urlencode(a){
+  return btoa(String.fromCharCode.apply(null, new Uint8Array(a))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''))
+}
+
 
 export const authenticate = async () => {
+  const codeVerifier = generateRandomString(64);
+  const hashed = await sha256(codeVerifier)
+  const codeChallenge = base64urlencode(hashed)
+
   const authUrl = new URL("https://accounts.spotify.com/authorize");
   localStorage.setItem("code_verifier", codeVerifier);
 

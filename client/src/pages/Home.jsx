@@ -106,7 +106,7 @@ const Home = ({ token }) => {
                 });
               }} disabled={currentTrack.index - 1 < 0}>prev</button>
               <audio controls>
-                  <source src="/audio/hate.mp3" type="audio/mpeg" />
+                  <source src="/audio/song.wav" type="audio/mpeg" />
                   Your browser does not support the audio element.
               </audio>
               <button  className="idk-btn" onClick={() => {
