@@ -9,6 +9,9 @@ function App() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
+    if (localStorage.getItem("code_verifier") === null) {
+      generateCodeChallengeAndVerifier();
+    } 
     if (urlParams.has("code") || localStorage.getItem("access_token") !== null) {
       let code = urlParams.get("code");
       localStorage.setItem("code", code);
