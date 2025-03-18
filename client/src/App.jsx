@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { authenticate, getToken } from "./helpers/auth";
+import { generateCodeChallengeAndVerifier, authenticate, getToken } from "./helpers/auth";
 import Home from "./pages/Home";
 
 function App() {
