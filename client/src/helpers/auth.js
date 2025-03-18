@@ -4,29 +4,28 @@ const generateRandomString = (length) => {
   const values = crypto.getRandomValues(new Uint8Array(length));
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 };
+const codeVerifier = generateRandomString(64);
 
-async function sha256(plain) {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(plain)
+const sha256 = async (plain) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(plain);
+  return window.crypto.subtle.digest("SHA-256", data);
+};
 
-  return window.crypto.subtle.digest('SHA-256', data)
-}
+const base64encode = (input) => {
+  return btoa(String.fromCharCode(...new Uint8Array(input)))
+    .replace(/=+$/, '')
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_");
+};
 
-function base64urlencode(a){
-  return btoa(String.fromCharCode.apply(null, new Uint8Array(a))
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''))
-}
-
+const hashed = await sha256(codeVerifier);
+const codeChallenge = base64encode(hashed);
 
 export const authenticate = async () => {
-  const codeVerifier = generateRandomString(64);
-  const hashed = await sha256(codeVerifier)
-  const codeChallenge = base64urlencode(hashed)
-
   const authUrl = new URL("https://accounts.spotify.com/authorize");
-  localStorage.setItem("code_verifier", codeVerifier);
+  window.localStorage.setItem("code_verifier", codeVerifier);
 
-  console.log(import.meta.env.VITE_SPOTIFY_REDIRECT_URI);
   const params = {
     response_type: "code",
     client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
