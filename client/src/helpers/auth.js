@@ -52,7 +52,7 @@ export const getToken = async (code) => {
     body: new URLSearchParams({
       client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
       grant_type: "authorization_code",
-      code,
+      code: code,
       redirect_uri: import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
       code_verifier: codeVerifier,
     }),
