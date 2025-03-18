@@ -19,12 +19,17 @@ const base64encode = (input) => {
     .replace(/\//g, "_");
 };
 
-const hashed = await sha256(codeVerifier);
-const codeChallenge = base64encode(hashed);
+export const generateCodeChallengeAndVerifier = async() => {
+  const codeVerifier = generateRandomString(64);
+  localStorage.setItem("code_verifier", codeVerifier);
+  const hashed = await sha256(codeVerifier);
+  const codeChallenge = base64encode(hashed);
+  localStorage.setItem("code_challenge", codeChallenge);
+}
 
 export const authenticate = async () => {
   const authUrl = new URL("https://accounts.spotify.com/authorize");
-  window.localStorage.setItem("code_verifier", codeVerifier);
+  const codeChallenge = localStorage.getItem("code_challenge");
 
   const params = {
     response_type: "code",
