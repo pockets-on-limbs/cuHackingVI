@@ -14,17 +14,22 @@ const sha256 = async (plain) => {
 
 const base64encode = (input) => {
   return btoa(String.fromCharCode(...new Uint8Array(input)))
-    .replace(/=/g, "")
+    .replace(/=+$/, '')
     .replace(/\+/g, "-")
     .replace(/\//g, "_");
 };
 
-const hashed = await sha256(codeVerifier);
-const codeChallenge = base64encode(hashed);
+export const generateCodeChallengeAndVerifier = async() => {
+  const codeVerifier = generateRandomString(64);
+  localStorage.setItem("code_verifier", codeVerifier);
+  const hashed = await sha256(codeVerifier);
+  const codeChallenge = base64encode(hashed);
+  localStorage.setItem("code_challenge", codeChallenge);
+}
 
 export const authenticate = async () => {
   const authUrl = new URL("https://accounts.spotify.com/authorize");
-  window.localStorage.setItem("code_verifier", codeVerifier);
+  const codeChallenge = localStorage.getItem("code_challenge");
 
   const params = {
     response_type: "code",
@@ -51,7 +56,7 @@ export const getToken = async (code) => {
     body: new URLSearchParams({
       client_id: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
       grant_type: "authorization_code",
-      code,
+      code: code,
       redirect_uri: import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
       code_verifier: codeVerifier,
     }),

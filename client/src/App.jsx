@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { authenticate, getToken } from "./helpers/auth";
+import { generateCodeChallengeAndVerifier, authenticate, getToken } from "./helpers/auth";
 import Home from "./pages/Home";
 
 function App() {
@@ -9,22 +9,31 @@ function App() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    if (urlParams.has("code") || localStorage.getItem("access_token") !== null) {
-      let code = urlParams.get("code");
-      localStorage.setItem("code", code);
-
-      getToken(code).then((token) => {
-        if (token) {
-          localStorage.setItem("access_token", token);
-          setAccess(token);
-        }
-      });
-
-      urlParams.delete("code");
-      window.history.replaceState("null", "", window.location.pathname);
-    } else {
-      setAccess(null);
+    const getCodeChallengeAndVerifier = async () => {
+      if ( localStorage.getItem("code_verifier") === null) {
+        await generateCodeChallengeAndVerifier();
+      }
     }
+
+    getCodeChallengeAndVerifier().then(() => {
+      if (urlParams.has("code") || localStorage.getItem("access_token") !== null) {
+        let code = urlParams.get("code");
+        localStorage.setItem("code", code);
+
+        getToken(code).then((token) => {
+          if (token) {
+            localStorage.setItem("access_token", token);
+            setAccess(token);
+          }
+        });
+
+        urlParams.delete("code");
+        window.history.replaceState("null", "", window.location.pathname);
+      } else {
+        setAccess(null);
+      }
+    })
+
   }, []);
 
     return <div className="outer-box">
