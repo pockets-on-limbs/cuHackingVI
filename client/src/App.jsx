@@ -21,7 +21,7 @@ function App() {
     }
     const checkAccess = () => {
       let code = urlParams.get("code");
-      let token = sessionStorage.getItem('access_token') 
+      let token = sessionStorage.getItem('access_token')
       if (code || token !== null) {
         if(code){
           getToken(code).then((token) => {
@@ -48,7 +48,7 @@ function App() {
         {
             access ? <>
                 <button onClick={logout} className="back-btn">Disconnect from Spotify</button>
-                <Home token={access}/>
+                <Home />
             </>
             : <>
                 <img src="/assets/catdj.gif" className="catdj"></img>
