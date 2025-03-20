@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import RecordButton from '../components/RecordButton.jsx';
 import PlaylistCard from '../components/PlaylistCard.jsx';
 import { sendSpotifyRequest } from '../helpers/util.js';
-import { createSong } from '../services/apiService.js';
-import { jenerate } from '../services/jenerateService.js';
+import { createSong, getRecommendations } from '../services/apiService.js';
 
 
 const Home = () => {
   const [playlists, setPlaylists] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-  const [tracks, setTracks] = useState([]);
+  const [tracks, setTracks] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
 
   const storeCurrentTrack = (track, index = 0) => {
@@ -35,31 +34,26 @@ const Home = () => {
     if (selectedPlaylist) {
       sendSpotifyRequest(selectedPlaylist.tracks.href, "GET").then((data) => {
         console.log("Fetched tracks:", data);
-        setTracks(data.items);
-        if (data.items.length > 0) {
-          storeCurrentTrack(data.items[0].track);
-        } else {
-          alert("Selected playlist is empty");
-        }
+        setTracks(data.items.reduce((acc, item) => {
+          acc.push(item.track); return acc;
+        }, []));
+
+        data.items.map((track) => {
+          createSong({
+            "songid": track.track.id,
+            "songname": track.track.name,
+            "artist": track.track.artists[0].name,
+            "album": track.track.album.name,
+          }).then((data) => {
+            console.log("Created song:", data);
+          }).catch((error) => {
+            console.error("Error creating song:", error);
+          });
+        })
       })
     }
   }
   , [selectedPlaylist]);
-
-  useEffect(() => {
-    tracks?.map((track) => {
-      createSong({
-        "songid": track.track.id,
-        "songname": track.track.name,
-        "artist": track.track.artists[0].name,
-        "album": track.track.album.name,
-      }).then((data) => {
-        console.log("Created song:", data);
-      }).catch((error) => {
-        console.error("Error creating song:", error);
-      });
-    })
-  }, [tracks]);
 
   const resetState = () => {
     setSelectedPlaylist(null);
@@ -68,8 +62,31 @@ const Home = () => {
   }
 
   const beginJeneration = () => {
-    jenerate();
+    getRecommendations().then(async (data) => {
+      const loadSongs = async () => {
+        const recommendations = []
+        for(let i = 0; i < data.length; i++){
+          const song = await sendSpotifyRequest(`https://api.spotify.com/v1/tracks/${data[i]}`, "GET")
+          recommendations.push(song);
+        }
+        return recommendations
+      }
+      await loadSongs().then((songs) => setTracks(songs));
+    })
   }
+
+  useEffect(() => {
+    if (!tracks) return;
+    console.log("here", tracks)
+    console.log(tracks.length)
+    if (tracks.length > 0) {
+      storeCurrentTrack(tracks[0]);
+    } else {
+      setCurrentTrack(null);
+      alert("Selected playlist is empty");
+    }
+  }, [tracks]);
+
 
   return (
     <div className='home-box'>
@@ -85,14 +102,14 @@ const Home = () => {
             <h2>{currentTrack.songname}</h2>
             <div className='soundbar'>
               <button className="idk-btn" onClick={() => {
-                storeCurrentTrack(tracks[currentTrack.index - 1].track, currentTrack.index - 1);
+                storeCurrentTrack(tracks[currentTrack.index - 1], currentTrack.index - 1);
               }} disabled={currentTrack.index - 1 < 0}>prev</button>
               <audio controls>
                   <source src="/audio/hate.mp3" type="audio/mpeg" />
                   Your browser does not support the audio element.
               </audio>
               <button  className="idk-btn" onClick={() => {
-                storeCurrentTrack(tracks[currentTrack.index + 1].track, currentTrack.index + 1);
+                storeCurrentTrack(tracks[currentTrack.index + 1], currentTrack.index + 1);
               }} disabled={currentTrack.index + 1 >= tracks.length}>next</button>
             </div>
             <RecordButton songid={currentTrack.songid} />
