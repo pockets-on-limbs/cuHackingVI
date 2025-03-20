@@ -4,47 +4,50 @@ import { generateCodeChallengeAndVerifier, authenticate, getToken } from "./help
 import Home from "./pages/Home";
 
 function App() {
-  const [access, setAccess] = useState(localStorage.getItem("access_token"));
+  const [access, setAccess] = useState(sessionStorage.getItem("access_token"));
+
+  const logout = () => {
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("code_challenge");
+    sessionStorage.removeItem("code_verifier");
+    generateCodeChallengeAndVerifier();
+    setAccess(null);
+  }
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-
     const getCodeChallengeAndVerifier = async () => {
-      if ( localStorage.getItem("code_verifier") === null) {
         await generateCodeChallengeAndVerifier();
-      }
     }
-
-    getCodeChallengeAndVerifier().then(() => {
-      if (urlParams.has("code") || localStorage.getItem("access_token") !== null) {
-        let code = urlParams.get("code");
-        localStorage.setItem("code", code);
-
-        getToken(code).then((token) => {
-          if (token) {
-            localStorage.setItem("access_token", token);
-            setAccess(token);
-          }
-        });
-
-        urlParams.delete("code");
-        window.history.replaceState("null", "", window.location.pathname);
+    const checkAccess = () => {
+      let code = urlParams.get("code");
+      let token = sessionStorage.getItem('access_token') 
+      if (code || token !== null) {
+        if(code){
+          getToken(code).then((token) => {
+            if (token) {
+              sessionStorage.setItem("access_token", token);
+              setAccess(token);
+              urlParams.delete("code");
+              window.history.replaceState("null", "", window.location.pathname);
+            }
+          });
+        } else {
+          setAccess(token);
+          // TODO: verify whether token is still valid
+        }
       } else {
         setAccess(null);
       }
-    })
+    }
+    getCodeChallengeAndVerifier().then(checkAccess);
 
   }, []);
 
     return <div className="outer-box">
         {
             access ? <>
-                <button onClick={() => {
-                    localStorage.removeItem("access_token");
-                    localStorage.removeItem("code");
-                    localStorage.removeItem("code_verifier");
-                    setAccess(null);
-                }} className="back-btn">Disconnect from Spotify</button>
+                <button onClick={logout} className="back-btn">Disconnect from Spotify</button>
                 <Home token={access}/>
             </>
             : <>

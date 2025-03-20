@@ -4,7 +4,6 @@ const generateRandomString = (length) => {
   const values = crypto.getRandomValues(new Uint8Array(length));
   return values.reduce((acc, x) => acc + possible[x % possible.length], "");
 };
-const codeVerifier = generateRandomString(64);
 
 const sha256 = async (plain) => {
   const encoder = new TextEncoder();
@@ -20,16 +19,19 @@ const base64encode = (input) => {
 };
 
 export const generateCodeChallengeAndVerifier = async() => {
+  if (sessionStorage.getItem("code_verifier") !== null) {
+    return
+  }
   const codeVerifier = generateRandomString(64);
-  localStorage.setItem("code_verifier", codeVerifier);
+  sessionStorage.setItem("code_verifier", codeVerifier);
   const hashed = await sha256(codeVerifier);
   const codeChallenge = base64encode(hashed);
-  localStorage.setItem("code_challenge", codeChallenge);
+  sessionStorage.setItem("code_challenge", codeChallenge);
 }
 
 export const authenticate = async () => {
   const authUrl = new URL("https://accounts.spotify.com/authorize");
-  const codeChallenge = localStorage.getItem("code_challenge");
+  const codeChallenge = sessionStorage.getItem("code_challenge");
 
   const params = {
     response_type: "code",
@@ -45,8 +47,10 @@ export const authenticate = async () => {
 };
 
 export const getToken = async (code) => {
-  const codeVerifier = localStorage.getItem("code_verifier");
-
+  if(sessionStorage.getItem("access_token") !== null){
+    return
+  }
+  const codeVerifier = sessionStorage.getItem("code_verifier");
   const url = "https://accounts.spotify.com/api/token";
   const payload = {
     method: "POST",
@@ -65,7 +69,6 @@ export const getToken = async (code) => {
   return fetch(url, payload)
     .then((body) => body.json())
     .then((response) => {
-      console.log("Token response:", response);
       return response.access_token;
     });
 
