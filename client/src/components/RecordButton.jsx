@@ -92,7 +92,7 @@ function RecordButton({songid}) {
 				formData.append("file", audioBlob, "recording.wav");
 
 				try {
-						const response = await axios.put(`http://localhost:8080/gemini/${songid}`, formData, {
+						const response = await axios.put(`http://api.djenerate.club/gemini/${songid}`, formData, {
 								headers: {
 										"Content-Type": "multipart/form-data",
 								},
