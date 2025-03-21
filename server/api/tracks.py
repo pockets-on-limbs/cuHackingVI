@@ -29,6 +29,7 @@ for item in responseJSON['content']:
      if item['popularity'] < 50:
           continue
      newItem = {}
+     newItem['spotifyURL'] = "https://open.spotify.com/track/" + item['id']
      newItem['trackTitle'] = item['trackTitle']
      newItem['artists'] = item['artists']
      cleanedJSON.append(newItem)
