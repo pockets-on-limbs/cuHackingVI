@@ -6,5 +6,7 @@ sqlalchemy
 google-genai
 python-multipart
 openai
+numpy
 yt-dlp
 ffmpeg-python
+savify
