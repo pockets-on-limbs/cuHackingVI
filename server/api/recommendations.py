@@ -69,15 +69,15 @@ router = APIRouter()
 
 @router.get("/")
 def get_recommendations():
-    # reccos = getRecco()
-    # trackIDs = []
-    # logger = Logger(log_location='path/for/logs', log_level=None) 
-    # s = Savify(api_credentials=("SPOTIPY_CLIENT_ID","SPOTIPY_CLIENT_SECRET"), path_holder=PathHolder(downloads_path='../downloads'), logger=logger)
-    # print(reccos)
-    # # Spotify URL
-    # for recco in reccos:
-    #     s.download(recco['spotifyURL'])
-    #     trackIDs.append(recco['id'])
+    reccos = getRecco()
+    trackIDs = []
+    logger = Logger(log_location='path/for/logs', log_level=None) 
+    s = Savify(api_credentials=("SPOTIPY_CLIENT_ID","SPOTIPY_CLIENT_SECRET"), path_holder=PathHolder(downloads_path='../downloads'), logger=logger)
+    print(reccos)
+    # Spotify URL
+    for recco in reccos:
+        s.download(recco['spotifyURL'])
+        trackIDs.append(recco['id'])
     # return trackIDs
     # commenting out but leaving here in case my stuff breaks and you need something hardcoded
     
