@@ -3,6 +3,8 @@ from savify import Savify
 from savify.logger import Logger
 from savify.types import Type, Format, Quality
 from savify.utils import PathHolder
+from cloudflare import Cloudflare
+from dotenv import dotenv_values
 import requests
 import random
 
@@ -32,6 +34,13 @@ hard_coded_recs = [
     "4Lh9y6lykMrLL3MBhx0CeO",
     "5r5w80s90PNNWnAVZsAhSb"
 ]
+
+config = dotenv_values(".env")
+
+client = Cloudflare(
+    api_email=config.get("CLOUDFLARE_EMAIL"),  # This is the default and can be omitted
+    api_key=config.get("CLOUDFLARE_API_KEY"),  # This is the default and can be omitted
+)
 
 def getRecco():
     payload = {}
